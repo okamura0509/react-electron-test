@@ -12,6 +12,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import ElectronStore from 'electron-store';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -24,6 +25,15 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+
+const store = new ElectronStore();
+ipcMain.handle('loadTodoList', async (event, data) => {
+  return store.get('todoList');
+});
+
+ipcMain.handle('storeTodoList', async (event, data) => {
+  store.set('todoList', data);
+});
 
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;

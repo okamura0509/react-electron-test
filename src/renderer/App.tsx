@@ -1,3 +1,6 @@
+/* eslint-disable promise/always-return */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable promise/catch-or-return */
 /* eslint-disable react/button-has-type */
 import { ToDataURLOptions } from 'electron';
 import { useEffect, useState } from 'react';
@@ -11,32 +14,38 @@ interface Todo {
   completed: boolean;
 }
 
+interface ElectronWindow extends Window {
+  db: {
+    loadTodoList: () => Promise<Array<Todo> | null>;
+    storeTodoList: (todoList: Array<Todo>) => Promise<void>;
+  };
+}
+
+declare const window: ElectronWindow;
+
+// Todoリスト読み込み
+const loadTodoList = async (): Promise<Array<Todo> | null> => {
+  console.log(11);
+  const todoList = await window.db.loadTodoList();
+  return todoList;
+};
+
+// Todo保存
+const storeTodoList = async (todoList: Array<Todo>): Promise<void> => {
+  await window.db.storeTodoList(todoList);
+};
+
 const HomeScreen = () => {
   // stateを定義
   const [text, setText] = useState<string>('');
   const [todoList, setTodoList] = useState<Array<Todo>>([]);
 
   useEffect(() => {
-    // 初回レンダー時にデフォルトのデータをセット
-    const defaultTodoList = [
-      {
-        id: 1,
-        text: '宿題をやる',
-        completed: false,
-      },
-      {
-        id: 2,
-        text: '部屋を片付ける',
-        completed: true,
-      },
-      {
-        id: 3,
-        text: 'メールを送る',
-        completed: false,
-      },
-    ];
-
-    setTodoList(defaultTodoList);
+    loadTodoList().then((todoList) => {
+      if (todoList) {
+        setTodoList(todoList);
+      }
+    });
   }, []);
 
   const onSubmit = () => {
@@ -51,6 +60,7 @@ const HomeScreen = () => {
         ...todoList,
       ];
       setTodoList(newTodoList);
+      storeTodoList(newTodoList);
 
       // テキストフィールドを空にする
       setText('');
@@ -65,6 +75,7 @@ const HomeScreen = () => {
         : todo;
     });
     setTodoList(newTodoList);
+    storeTodoList(newTodoList);
   };
 
   return (

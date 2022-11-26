@@ -21,3 +21,9 @@ contextBridge.exposeInMainWorld('electron', {
     },
   },
 });
+
+contextBridge.exposeInMainWorld('db', {
+  loadTodoList: () => ipcRenderer.invoke('loadTodoList'),
+  storeTodoList: (todoList: Array<object>) =>
+    ipcRenderer.invoke('storeTodoList', todoList),
+});
