@@ -25,7 +25,6 @@ declare const window: ElectronWindow;
 
 // Todoリスト読み込み
 const loadTodoList = async (): Promise<Array<Todo> | null> => {
-  console.log(11);
   const todoList = await window.db.loadTodoList();
   return todoList;
 };
@@ -67,6 +66,15 @@ const HomeScreen = () => {
     }
   };
 
+  const onDelete = () => {
+    // ボタンクリック時にtodoListに新しいToDoを追加
+    const newTodoList: Array<Todo> = todoList.filter((todo) => {
+      return todo.completed === false;
+    });
+    setTodoList(newTodoList);
+    storeTodoList(newTodoList);
+  };
+
   const onCheck = (newTodo: Todo) => {
     // チェック時にcompletedの値を書き換える
     const newTodoList = todoList.map((todo) => {
@@ -89,6 +97,9 @@ const HomeScreen = () => {
           />
           <button onClick={onSubmit} className="add-todo-button">
             追加
+          </button>
+          <button onClick={onDelete} className="add-todo-button">
+            削除
           </button>
         </div>
 

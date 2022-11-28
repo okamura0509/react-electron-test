@@ -1,7 +1,3 @@
-/*
- * @NOTE: Prepend a `~` to css file paths that are in your node_modules
- *        See https://github.com/webpack-contrib/sass-loader#imports
- */
 body {
   position: relative;
   color: white;
@@ -14,28 +10,64 @@ body {
   );
   font-family: sans-serif;
   overflow-y: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
-button {
-  background-color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
+.add-todo-button {
+  background-color: #da568a;
+  color: white;
+  border: 1px solid #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
   appearance: none;
-  font-size: 1.3rem;
-  box-shadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
-    0px 18px 88px -4px rgba(24, 39, 75, 0.14);
+  font-size: 12px;
   transition: all ease-in 0.1s;
   cursor: pointer;
   opacity: 0.9;
+  line-height: 1;
+  min-width: 60px;
 }
 
-button:hover {
-  transform: scale(1.05);
+.add-todo-button:hover {
+  background-color: #e47474;
   opacity: 1;
+}
+
+input[type='text'] {
+  border: none;
+  border-radius: 4px;
+  min-height: 30px;
+  margin-right: 12px;
+  opacity: 0.9;
+  padding: 4px 12px;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  display: flex;
+  opacity: 0.95;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 40px auto;
+}
+
+.todo-list li {
+  line-height: 2;
+}
+
+.todo-list li input,
+.todo-list li span {
+  cursor: pointer;
+}
+
+ul {
+  padding: 0;
 }
 
 li {
@@ -59,4 +91,9 @@ a:hover {
   justify-content: center;
   align-items: center;
   margin: 20px 0;
+}
+
+.checked {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
